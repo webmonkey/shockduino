@@ -1,7 +1,4 @@
 # shockduino
-Shock detection and reporting device
-
-## Synposis
 
 The idea is to create a small device that you can include in a package/parcel sent via the post. 
  
@@ -9,13 +6,22 @@ The device will be capable of detecting shock/drop events. Before signing for th
 
 ## Hardware
 
-Initially using an RFduino and an ADXL375 accelerometer
+Initially using an [RFduino](http://www.rfduino.com/) and an [ADXL375](http://www.analog.com/en/products/mems/mems-accelerometers/adxl375.html) accelerometer.
+
+### Prototype
+
+The prototype design is using an [RFduino dev board](http://www.rfduino.com/product/rfd22102-rfduino-dip/index.html), [RFduino USB shield](http://www.rfduino.com/product/rfd22121-usb-shield-for-rfduino/index.html) and an [ADXL375Z eval board](http://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/EVAL-ADXL375.html) all slung together on a prototyping breadboard.
+
+Connections between the RFduino and ADXL375:
+- Ground is common
+- 3.3v from the RFduino is connected to VIO and VS 
+- SCL is connected between GPIO pins 3,4,5,6 to SDO,SCL,SDA,CS
 
 ## Project Plan
 
 ### Prototype Hardware
 
-- [ ] Connect up hardware and verify it works
+- [x] Connect up hardware and verify it works
 
 ### Prototype Software
 
