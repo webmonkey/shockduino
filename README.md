@@ -25,7 +25,7 @@ Connections between the RFduino and ADXL375:
 
 ### Prototype Software
 
-- [ ] Pull meaningful data from the ADXL375
+- [x] Pull meaningful data from the ADXL375
 - [ ] Separate out ADXL375 functionality into a library
 - [ ] Implement shock detection on the ADXL375
 - [ ] Calculate shock amplitude after a shock event is triggered

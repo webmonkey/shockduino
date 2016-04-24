@@ -40,16 +40,21 @@ void loop(){
   //The results of the read operation will get stored to the values[] buffer.
   readRegister(DATAX0, 6, values);
 
-  short x = (((short)values[1]<<8)|(short)values[0]);
-  short y = (((short)values[3]<<8)|(short)values[2]);
-  short z = (((short)values[5]<<8)|(short)values[4]);
+  short rawX = values[1]<<8 | values[0];
+  short rawY = values[3]<<8 | values[2];
+  short rawZ = values[5]<<8 | values[4];
 
-  //Print the results to the terminal.
+  int x = rawX * 49;
+  int y = rawY * 49;
+  int z = rawZ * 49;
+
   Serial.print(x, DEC);
   Serial.print(',');
   Serial.print(y, DEC);
   Serial.print(',');
   Serial.println(z, DEC);
+
+  Serial.println("-");
 
   delay(1000); 
 }
