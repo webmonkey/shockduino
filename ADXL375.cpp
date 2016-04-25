@@ -22,11 +22,12 @@ AccelReading ADXL375::getXYZ()
 {
   uint8_t data[6];
   _multiReadRegister(ADXL375_REG_DATAX0, data, 6);
-  
+
   AccelReading xyz(
     data[0] | data[1]<<8,
     data[2] | data[3]<<8,
-    data[4] | data[5]<<8
+    data[4] | data[5]<<8,
+    ADXL375_XYZ_READ_SCALE_FACTOR
   );
   
   return xyz;

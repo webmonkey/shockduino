@@ -34,6 +34,8 @@
 #define ADXL375_REG_FIFO_CTL            0x38    // FIFO control
 #define ADXL375_REG_FIFO_STATUS         0x39    // FIFO status
 
+#define ADXL375_XYZ_READ_SCALE_FACTOR   49      // scaling factor when reading xyz data
+
 class ADXL375
 {
   public:
