@@ -35,6 +35,7 @@
 #define ADXL375_REG_FIFO_STATUS         0x39    // FIFO status
 
 #define ADXL375_XYZ_READ_SCALE_FACTOR   49      // scaling factor when reading xyz data
+#define ADXL375_THRESH_SHOCK_SCALE      780     // scaling factor for shock threshold register
 
 class ADXL375
 {
@@ -44,6 +45,8 @@ class ADXL375
     AccelReading getXYZ();
     uint8_t readRegister(uint8_t regAddress);
     void writeRegister(uint8_t regAddress, uint8_t value);
+    void setShockThreshold(uint8_t shockThreshold);
+    void startShockDetection(bool x = true, bool y = true, bool z = true);
   private:
     void _multiReadRegister(uint8_t regAddress, uint8_t values[], uint8_t numberOfBytes = 1);
 };

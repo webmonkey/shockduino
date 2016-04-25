@@ -40,6 +40,24 @@ uint8_t ADXL375::readRegister(uint8_t regAddress)
   return data[0];
 }
 
+// input is in g
+void ADXL375::setShockThreshold(uint8_t shockThreshold)
+{
+  uint8_t scaledValue = shockThreshold * 1000 / ADXL375_THRESH_SHOCK_SCALE;
+  writeRegister(ADXL375_REG_THRESH_SHOCK, scaledValue);
+}
+
+void ADXL375::startShockDetection(bool x, bool y, bool z)
+{
+  uint8_t shockAxesData = 0b00000000;
+  if(x) shockAxesData |= 0b100;
+  if(y) shockAxesData |= 0b010;
+  if(z) shockAxesData |= 0b001;
+
+  writeRegister(ADXL375_REG_SHOCK_AXES, shockAxesData);
+  writeRegister(ADXL375_REG_DUR, 0b00000010);
+  writeRegister(ADXL375_REG_INT_ENABLE, 0b01000000);
+}
 
 
 void ADXL375::_multiReadRegister(uint8_t regAddress, uint8_t values[], uint8_t numberOfBytes)

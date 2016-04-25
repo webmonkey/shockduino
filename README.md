@@ -27,7 +27,7 @@ Connections between the RFduino and ADXL375:
 
 - [x] Pull meaningful data from the ADXL375
 - [x] Separate out ADXL375 functionality into a library
-- [ ] Implement shock detection on the ADXL375
+- [x] Implement shock detection on the ADXL375
 - [ ] Calculate shock amplitude after a shock event is triggered
 - [ ] Get iBeacon reporting of shocks working
 - [ ] Get RFduino sleep mode and interrupt on shock event working
