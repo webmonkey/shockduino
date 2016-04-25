@@ -11,19 +11,14 @@ void setup(){
 
 void loop(){
 
-    Serial.println("looping...");
-
-    int val = accel.readRegister(ADXL375_REG_DEVID);
-    Serial.println(val);
-
     AccelReading xyz = accel.getXYZ();
 
-    Serial.print("x=");
+    // print in output that the serial plotter can use
     Serial.print(xyz.x);
-    Serial.print(",y=");
+    Serial.print("\t");
     Serial.print(xyz.y);
-    Serial.print(",z=");
+    Serial.print("\t");
     Serial.println(xyz.z);
     
-    delay(1000);
+    delay(10);
 }
