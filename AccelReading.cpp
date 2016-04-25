@@ -1,10 +1,10 @@
 #include "Arduino.h"
 #include "AccelReading.h"
 
-AccelReading::AccelReading(int _x, int _y, int _z)
+AccelReading::AccelReading(int16_t _x, int16_t _y, int16_t _z, uint8_t scalingFactor)
 {
-  x = _x;
-  y = _y;
-  z = _z;
+  x = _x * scalingFactor;
+  y = _y * scalingFactor;
+  z = _z * scalingFactor;
 }
 

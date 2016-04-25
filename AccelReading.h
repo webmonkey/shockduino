@@ -6,7 +6,7 @@
 class AccelReading
 {
   public:
-    AccelReading(int x, int y, int z);
+    AccelReading(int16_t x, int16_t y, int16_t z, uint8_t scalingFactor = 1);
     int x;
     int y;
     int z;
