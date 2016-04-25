@@ -40,8 +40,10 @@ class ADXL375
     ADXL375();
     void init();
     AccelReading getXYZ();
-    uint8_t readRegister(uint8_t reg);
-    void writeRegister(uint8_t reg, uint8_t value);
+    uint8_t readRegister(uint8_t regAddress);
+    void writeRegister(uint8_t regAddress, uint8_t value);
+  private:
+    void _multiReadRegister(uint8_t regAddress, uint8_t values[], uint8_t numberOfBytes = 1);
 };
 
 #endif

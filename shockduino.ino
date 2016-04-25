@@ -13,7 +13,7 @@ void loop(){
 
     Serial.println("looping...");
 
-    int val = accel.readRegister(1);
+    int val = accel.readRegister(ADXL375_REG_DEVID);
     Serial.println(val);
 
     AccelReading xyz = accel.getXYZ();
