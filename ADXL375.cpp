@@ -14,8 +14,18 @@ void ADXL375::init()
   pinMode(PIN_SPI_SS, OUTPUT);
   digitalWrite(PIN_SPI_SS, HIGH);
 
-  // Put the ADXL345 into Measurement Mode by writing 0x08 to the POWER_CTL register.
-  writeRegister(ADXL375_REG_POWER_CTL, 0x08);  //Measurement mode
+  // set the data sampling rate to 3200Hz
+  setDataRate(0b00001111);
+}
+
+void ADXL375::startMeasuring()
+{
+  writeRegister(ADXL375_REG_POWER_CTL, 0x08);
+}
+
+void ADXL375::setDataRate(uint8_t rate)
+{
+  writeRegister(ADXL375_REG_BW_RATE, rate);
 }
 
 AccelReading ADXL375::getXYZ()
@@ -23,7 +33,8 @@ AccelReading ADXL375::getXYZ()
   uint8_t data[6];
   _multiReadRegister(ADXL375_REG_DATAX0, data, 6);
 
-  AccelReading xyz(
+  AccelReading xyz;
+  xyz.init(
     data[0] | data[1]<<8,
     data[2] | data[3]<<8,
     data[4] | data[5]<<8,
@@ -47,18 +58,52 @@ void ADXL375::setShockThreshold(uint8_t shockThreshold)
   writeRegister(ADXL375_REG_THRESH_SHOCK, scaledValue);
 }
 
-void ADXL375::startShockDetection(bool x, bool y, bool z)
+// empties the FIFO buffer
+// @return the number of entries from the buffer
+uint8_t ADXL375::readFIFOBuffer(AccelReading readings[])
+{
+  uint8_t entries = readRegister(ADXL375_REG_FIFO_STATUS) & 0b00111111;
+
+  for (uint8_t i=0; i<entries; i++) {
+    readings[i] = getXYZ();
+  }
+
+  return entries;
+}
+
+void ADXL375::startShockDetection()
+{
+  setShockAxes(true,true,true);
+
+  // shock duration to test for 625 μs/LSB
+  writeRegister(ADXL375_REG_DUR, 2);
+
+  // reset then enable FIFO trigger mode
+  setFIFOMode(ADXL375_FIFO_MODE_BYPASS);
+  setFIFOMode(ADXL375_FIFO_MODE_TRIGGER, ADXL375_TRIGGER_INT1_PIN, 16);
+
+  // set the interrupt bit for shock detection
+  uint8_t intEnable = readRegister(ADXL375_REG_INT_ENABLE);
+  writeRegister(ADXL375_REG_INT_ENABLE, intEnable | 0b01000000);
+
+  startMeasuring();
+}
+
+void ADXL375::setShockAxes(bool x, bool y, bool z)
 {
   uint8_t shockAxesData = 0b00000000;
   if(x) shockAxesData |= 0b100;
   if(y) shockAxesData |= 0b010;
   if(z) shockAxesData |= 0b001;
 
+  // the axes we want to detect shocks on
   writeRegister(ADXL375_REG_SHOCK_AXES, shockAxesData);
-  writeRegister(ADXL375_REG_DUR, 0b00000010);
-  writeRegister(ADXL375_REG_INT_ENABLE, 0b01000000);
 }
 
+void ADXL375::setFIFOMode(uint8_t mode, uint8_t pin, uint8_t samples)
+{
+  writeRegister(ADXL375_REG_FIFO_CTL, mode<<6 | pin<<5 | samples);
+}
 
 void ADXL375::_multiReadRegister(uint8_t regAddress, uint8_t values[], uint8_t numberOfBytes)
 {
