@@ -20,6 +20,7 @@ void loop(){
 
   byte intSource = accel.readRegister(ADXL375_REG_INT_SOURCE);
   if (intSource & 0b01000000) {
+
     Serial.println("Shock Detected!");
 
     byte shockStatus = accel.readRegister(ADXL375_REG_ACT_SHOCK_STATUS);
@@ -29,11 +30,19 @@ void loop(){
     if (shockStatus & 0b010) Serial.print("y");
     if (shockStatus & 0b001) Serial.print("z");
     Serial.println("");
+
+    AccelReading readings[32];
+    uint8_t fifoCount = accel.readFIFOBuffer(readings);
+
+    Serial.println("x\ty\tz\tcombined");
+
+    for (uint8_t i=0; i<fifoCount; i++) {
+      readings[i].printDebug();
+    }
+
+    // resets everything
+    accel.startShockDetection();
   }
-  
-
-  Serial.println("-");
-
 
 /*
     AccelReading xyz = accel.getXYZ();
