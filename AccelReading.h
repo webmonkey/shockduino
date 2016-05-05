@@ -8,11 +8,11 @@ class AccelReading
   public:
     AccelReading();
     void init(int16_t x, int16_t y, int16_t z, uint8_t scalingFactor = 1);
-    int accelSize();
+    uint32_t accelSize();
     void printDebug();
-    int x;
-    int y;
-    int z;
+    uint32_t x;
+    uint32_t y;
+    uint32_t z;
 };
 
 #endif

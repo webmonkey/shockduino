@@ -12,7 +12,7 @@ void AccelReading::init(int16_t _x, int16_t _y, int16_t _z, uint8_t scalingFacto
   z = _z * scalingFactor;
 }
 
-int AccelReading::accelSize()
+uint32_t AccelReading::accelSize()
 {
   return sqrt(sq(x) + sq(y) + sq(z));
 }
