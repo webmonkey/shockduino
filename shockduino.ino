@@ -1,9 +1,14 @@
 #include "ADXL375.h"
+#include "RFduinoBLE.h"
+
 
 ADXL375 accel;
 
 // size of shock to look for in g
 const uint16_t SHOCKDUINO_THRESHOLD = 10;
+
+// count of number of shocks won't persist power cycling
+uint8_t shockCount;
 
 void setup(){ 
     Serial.println("hello!");
@@ -12,7 +17,13 @@ void setup(){
 
     // shock could be between 2 axis
     accel.setShockThreshold(SHOCKDUINO_THRESHOLD / 2);
+    shockCount=0;
     accel.startShockDetection();
+
+    // setup the iBeacon
+    RFduinoBLE.iBeacon = true;
+    RFduinoBLE.iBeaconMajor = shockCount;
+    RFduinoBLE.begin();
 
     Serial.print("Device ID: ");
     Serial.println(accel.readRegister(ADXL375_REG_DEVID), HEX);
@@ -39,9 +50,15 @@ void loop(){
     if (maxAccelSize>=SHOCKDUINO_THRESHOLD) {
         Serial.print("maxAccelSize=");
         Serial.println(maxAccelSize);
+        shockCount++;
+        RFduinoBLE.iBeaconMajor = shockCount;
+        RFduinoBLE.end();
+        RFduinoBLE.begin();
     } else {
         Serial.println("too small!");
     }
+
+
 
 
     // resets everything

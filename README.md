@@ -31,7 +31,7 @@ Connections between the RFduino and ADXL375:
 - [x] Record detailed accelleration data after a shock event is triggered
 - [x] Return maximum shock amplitude after a shock has occurred
 - [x] Make configurable shock detection interface simple
-- [ ] Get iBeacon reporting of shocks working
+- [x] Get iBeacon reporting of shocks working
 - [ ] Get RFduino sleep mode and interrupt on shock event working
 - [ ] Get INACT/ACT detection working with ADXL375
 - [ ] Configure iBeacon to only advertise when the ADXL375 is active
