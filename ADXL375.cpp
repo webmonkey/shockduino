@@ -58,17 +58,10 @@ void ADXL375::setShockThreshold(uint8_t shockThreshold)
   writeRegister(ADXL375_REG_THRESH_SHOCK, scaledValue);
 }
 
-// empties the FIFO buffer
-// @return the number of entries from the buffer
-uint8_t ADXL375::readFIFOBuffer(AccelReading readings[])
+// returns the number of items in the FIFO buffer
+uint8_t ADXL375::getFIFOBufferSize()
 {
-  uint8_t entries = readRegister(ADXL375_REG_FIFO_STATUS) & 0b00111111;
-
-  for (uint8_t i=0; i<entries; i++) {
-    readings[i] = getXYZ();
-  }
-
-  return entries;
+  return readRegister(ADXL375_REG_FIFO_STATUS) & 0b00111111;
 }
 
 void ADXL375::startShockDetection()

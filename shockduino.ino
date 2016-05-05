@@ -31,29 +31,17 @@ void loop(){
     if (shockStatus & 0b001) Serial.print("z");
     Serial.println("");
 
-    AccelReading readings[32];
-    uint8_t fifoCount = accel.readFIFOBuffer(readings);
+    uint8_t fifoCount = accel.getFIFOBufferSize();
 
     Serial.println("x\ty\tz\tcombined");
 
     for (uint8_t i=0; i<fifoCount; i++) {
-      readings[i].printDebug();
+        accel.getXYZ().printDebug();
     }
 
     // resets everything
     accel.startShockDetection();
   }
-
-/*
-    AccelReading xyz = accel.getXYZ();
-
-    // print in output that the serial plotter can use
-    Serial.print(xyz.x);
-    Serial.print("\t");
-    Serial.print(xyz.y);
-    Serial.print("\t");
-    Serial.println(xyz.z);
-*/
   
-    delay(1000);
+  delay(1000);
 }

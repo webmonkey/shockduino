@@ -59,7 +59,7 @@ class ADXL375
     void setShockAxes(bool x = true, bool y = true, bool z = true);
     void startShockDetection();
     void setDataRate(uint8_t rate);
-    uint8_t readFIFOBuffer(AccelReading readings[]);
+    uint8_t getFIFOBufferSize();
     void setFIFOMode(uint8_t mode, uint8_t trigger = 0, uint8_t samples = 0);
   private:
     void _multiReadRegister(uint8_t regAddress, uint8_t values[], uint8_t numberOfBytes = 1);
