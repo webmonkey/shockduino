@@ -35,3 +35,4 @@ Connections between the RFduino and ADXL375:
 - [ ] Get RFduino sleep mode and interrupt on shock event working
 - [ ] Get INACT/ACT detection working with ADXL375
 - [ ] Configure iBeacon to only advertise when the ADXL375 is active
+- [ ] Allow RFduino to detect issues and power cycle ADXL375
