@@ -31,13 +31,10 @@ void loop(){
     if (shockStatus & 0b001) Serial.print("z");
     Serial.println("");
 
-    uint8_t fifoCount = accel.getFIFOBufferSize();
+    uint8_t maxAccelSize = getMaxAcceleration(accel);
+    Serial.print("maxAccelSize=");
+    Serial.println(maxAccelSize);
 
-    Serial.println("x\ty\tz\tcombined");
-
-    for (uint8_t i=0; i<fifoCount; i++) {
-        accel.getXYZ().printDebug();
-    }
 
     // resets everything
     accel.startShockDetection();
@@ -45,3 +42,16 @@ void loop(){
   
   delay(1000);
 }
+
+// goes through the accellerometer's FIFO buffer and returns the largest shock
+uint8_t getMaxAcceleration(ADXL375 accellerometer)
+{
+    uint8_t fifoCount = accellerometer.getFIFOBufferSize();
+    uint32_t maxAccel=0;
+    for (uint8_t i=0; i<fifoCount; i++) {
+        uint32_t thisAccel = accel.getXYZ().accelSize();
+        if (thisAccel>maxAccel) maxAccel=thisAccel;
+    }
+    return (uint8_t) (maxAccel / 1000);
+}
+
