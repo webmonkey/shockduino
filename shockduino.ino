@@ -1,13 +1,17 @@
 #include "ADXL375.h"
 
-ADXL375 accel;    
+ADXL375 accel;
+
+// size of shock to look for in g
+const uint16_t SHOCKDUINO_THRESHOLD = 10;
 
 void setup(){ 
     Serial.println("hello!");
     Serial.begin(9600);
     accel.init();
-    
-    accel.setShockThreshold(10);
+
+    // shock could be between 2 axis
+    accel.setShockThreshold(SHOCKDUINO_THRESHOLD / 2);
     accel.startShockDetection();
 
     Serial.print("Device ID: ");
@@ -32,8 +36,12 @@ void loop(){
     Serial.println("");
 
     uint8_t maxAccelSize = getMaxAcceleration(accel);
-    Serial.print("maxAccelSize=");
-    Serial.println(maxAccelSize);
+    if (maxAccelSize>=SHOCKDUINO_THRESHOLD) {
+        Serial.print("maxAccelSize=");
+        Serial.println(maxAccelSize);
+    } else {
+        Serial.println("too small!");
+    }
 
 
     // resets everything
